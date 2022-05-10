@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jfree.jfreesvg" type="repository">
+    <properties maven-id="org.jfree:jfreesvg:3.4" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jfree/jfreesvg/3.4/jfreesvg-3.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
