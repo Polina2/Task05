@@ -5,7 +5,7 @@ import java.util.function.Function;
 /**
  * Реализация простейшего бинарного дерева
  */
-public class SimpleBinaryTree<T> implements BinaryTree<T> {
+public class SimpleBinaryTree<T extends Comparable<? super T>> implements BinaryTree<T> {
 
     protected class SimpleTreeNode implements BinaryTree.TreeNode<T> {
         public T value;
@@ -35,6 +35,11 @@ public class SimpleBinaryTree<T> implements BinaryTree<T> {
         @Override
         public TreeNode<T> getRight() {
             return right;
+        }
+
+        @Override
+        public void setValue(T value) {
+            this.value = value;
         }
     }
 
@@ -149,5 +154,43 @@ public class SimpleBinaryTree<T> implements BinaryTree<T> {
             throw new Exception(String.format("Ожидался конец строки [%d]", iw.index));
         }
         this.root = root;
+    }
+
+    private boolean isBSTree() {
+        T prev = null;
+        for(T value : this) {
+           if (prev != null)
+               if (value.compareTo(prev) < 0)
+                   return false;
+           prev = value;
+        }
+        return true;
+    }
+
+    private boolean isBSTreeRecursion(TreeNode<T> node) {
+        if ((node.getLeft() == null || (node.getLeft().getLeft() == null && node.getLeft().getRight() == null)) &&
+                (node.getRight() == null || (node.getRight().getLeft() == null && node.getRight().getRight() == null)))
+            return (node.getLeft() == null || node.getLeft().getValue().compareTo(node.getValue()) < 0) &&
+                    (node.getRight() == null || node.getRight().getValue().compareTo(node.getValue()) > 0);
+        return isBSTreeRecursion(node.getLeft()) && isBSTreeRecursion(node.getRight()) &&
+                node.getLeft().getValue().compareTo(node.getValue()) < 0 &&
+                node.getRight().getValue().compareTo(node.getValue()) > 0;
+    }
+
+    public boolean solution() {
+        for (TreeNode<T> a : BinaryTreeAlgorithms.inOrderNodes(root)) {
+            for (TreeNode<T> b : BinaryTreeAlgorithms.inOrderNodes(root)) {
+                if (a != b) {
+                    T tmp = a.getValue();
+                    a.setValue(b.getValue());
+                    b.setValue(tmp);
+                    if (this.isBSTree())
+                        return true;
+                    b.setValue(a.getValue());
+                    a.setValue(tmp);
+                }
+            }
+        }
+        return false;
     }
 }

@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.Stack;
 
 /**
- * Интерфейс для двоичного дерева с реализацияей по умолчанию различных обходов
+ * Интерфейс для двоичного дерева с реализацией по умолчанию различных обходов
  * дерева
  *
  * @param <T>
@@ -25,6 +25,8 @@ public interface BinaryTree<T> extends Iterable<T> {
          * @return Значение в узле дерева
          */
         T getValue();
+
+        default void setValue(T value){}
 
         /**
          * @return Левое поддерево

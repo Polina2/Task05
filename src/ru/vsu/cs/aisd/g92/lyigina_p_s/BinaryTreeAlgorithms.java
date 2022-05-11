@@ -55,7 +55,7 @@ public class BinaryTreeAlgorithms {
             Stack<BinaryTree.TreeNode<T>> stack = new Stack<>();
             stack.push(treeNode);
 
-            return new Iterator<T>() {
+            return new Iterator<>() {
                 @Override
                 public boolean hasNext() {
                     return stack.size() > 0;
@@ -117,7 +117,7 @@ public class BinaryTreeAlgorithms {
                 node = node.getLeft();
             }
 
-            return new Iterator<T>() {
+            return new Iterator<>() {
                 @Override
                 public boolean hasNext() {
                     return !stack.isEmpty();
@@ -127,6 +127,38 @@ public class BinaryTreeAlgorithms {
                 public T next() {
                     BinaryTree.TreeNode<T> node = stack.pop();
                     T result = node.getValue();
+                    if (node.getRight() != null) {
+                        node = node.getRight();
+                        while (node != null) {
+                            stack.push(node);
+                            node = node.getLeft();
+                        }
+                    }
+                    return result;
+                }
+            };
+        };
+    }
+
+    public static <T> Iterable<BinaryTree.TreeNode<T>> inOrderNodes(BinaryTree.TreeNode<T> treeNode) {
+        return () -> {
+            Stack<BinaryTree.TreeNode<T>> stack = new Stack<>();
+            BinaryTree.TreeNode<T> node = treeNode;
+            while (node != null) {
+                stack.push(node);
+                node = node.getLeft();
+            }
+
+            return new Iterator<>() {
+                @Override
+                public boolean hasNext() {
+                    return !stack.isEmpty();
+                }
+
+                @Override
+                public BinaryTree.TreeNode<T> next() {
+                    BinaryTree.TreeNode<T> node = stack.pop();
+                    BinaryTree.TreeNode<T> result = node;
                     if (node.getRight() != null) {
                         node = node.getRight();
                         while (node != null) {
@@ -179,7 +211,7 @@ public class BinaryTreeAlgorithms {
             Stack<T> valuesStack = new Stack<>();
             stack.push(treeNode);
 
-            return new Iterator<T>() {
+            return new Iterator<>() {
                 @Override
                 public boolean hasNext() {
                     return stack.size() > 0;
@@ -256,7 +288,7 @@ public class BinaryTreeAlgorithms {
             Queue<QueueItem<T>> queue = new LinkedList<>();
             queue.add(new QueueItem<>(treeNode, 0));
 
-            return new Iterator<T>() {
+            return new Iterator<>() {
                 @Override
                 public boolean hasNext() {
                     return queue.size() > 0;
