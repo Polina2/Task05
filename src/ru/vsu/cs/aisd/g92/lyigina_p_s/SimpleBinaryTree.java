@@ -178,20 +178,25 @@ public class SimpleBinaryTree<T extends Comparable<? super T>> implements Binary
         }
         return true;
     }
-
-    private boolean isBSTreeRecursion(TreeNode<T> node) {
-        /*
-        if (node == null)
-            return true;
-        */
+/*
+    private boolean isBSTreeRecursion1(TreeNode<T> node) {
         if ((node.getLeft() == null || (node.getLeft().getLeft() == null && node.getLeft().getRight() == null)) &&
                 (node.getRight() == null || (node.getRight().getLeft() == null && node.getRight().getRight() == null)))
             return (node.getLeft() == null || node.getLeft().getValue().compareTo(node.getValue()) < 0) &&
                     (node.getRight() == null || node.getRight().getValue().compareTo(node.getValue()) > 0);
 
-        return isBSTreeRecursion(node.getLeft()) && isBSTreeRecursion(node.getRight()) &&
+        return isBSTreeRecursion1(node.getLeft()) && isBSTreeRecursion1(node.getRight()) &&
                 node.getLeft().getValue().compareTo(node.getValue()) < 0 &&
                 node.getRight().getValue().compareTo(node.getValue()) > 0;
+    }
+*/
+    private boolean isBSTreeRecursion(TreeNode<T> node, T lowerBound, T higherBound) {
+        if (node == null)
+            return true;
+        return (lowerBound == null || node.getValue().compareTo(lowerBound) > 0) &&
+                (higherBound == null || node.getValue().compareTo(higherBound) < 0) &&
+                isBSTreeRecursion(node.getLeft(), lowerBound, node.getValue()) &&
+                isBSTreeRecursion(node.getRight(), node.getValue(), higherBound);
     }
 
     public boolean solution() {
@@ -201,7 +206,7 @@ public class SimpleBinaryTree<T extends Comparable<? super T>> implements Binary
                     T tmp = a.getValue();
                     a.setValue(b.getValue());
                     b.setValue(tmp);
-                    if (this.isBSTree()) {
+                    if (isBSTreeRecursion(root, null, null)) {
                         a.setColor(Color.RED);
                         b.setColor(Color.RED);
                         return true;
