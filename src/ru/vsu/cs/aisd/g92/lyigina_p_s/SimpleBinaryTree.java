@@ -1,5 +1,6 @@
 package ru.vsu.cs.aisd.g92.lyigina_p_s;
 
+import java.awt.*;
 import java.util.function.Function;
 
 /**
@@ -11,6 +12,7 @@ public class SimpleBinaryTree<T extends Comparable<? super T>> implements Binary
         public T value;
         public SimpleTreeNode left;
         public SimpleTreeNode right;
+        public Color color = Color.BLACK;
 
         public SimpleTreeNode(T value, SimpleTreeNode left, SimpleTreeNode right) {
             this.value = value;
@@ -40,6 +42,16 @@ public class SimpleBinaryTree<T extends Comparable<? super T>> implements Binary
         @Override
         public void setValue(T value) {
             this.value = value;
+        }
+
+        @Override
+        public Color getColor() {
+            return color;
+        }
+
+        @Override
+        public void setColor(Color color) {
+            this.color = color;
         }
     }
 
@@ -168,10 +180,15 @@ public class SimpleBinaryTree<T extends Comparable<? super T>> implements Binary
     }
 
     private boolean isBSTreeRecursion(TreeNode<T> node) {
+        /*
+        if (node == null)
+            return true;
+        */
         if ((node.getLeft() == null || (node.getLeft().getLeft() == null && node.getLeft().getRight() == null)) &&
                 (node.getRight() == null || (node.getRight().getLeft() == null && node.getRight().getRight() == null)))
             return (node.getLeft() == null || node.getLeft().getValue().compareTo(node.getValue()) < 0) &&
                     (node.getRight() == null || node.getRight().getValue().compareTo(node.getValue()) > 0);
+
         return isBSTreeRecursion(node.getLeft()) && isBSTreeRecursion(node.getRight()) &&
                 node.getLeft().getValue().compareTo(node.getValue()) < 0 &&
                 node.getRight().getValue().compareTo(node.getValue()) > 0;
@@ -184,8 +201,11 @@ public class SimpleBinaryTree<T extends Comparable<? super T>> implements Binary
                     T tmp = a.getValue();
                     a.setValue(b.getValue());
                     b.setValue(tmp);
-                    if (this.isBSTree())
+                    if (this.isBSTree()) {
+                        a.setColor(Color.RED);
+                        b.setColor(Color.RED);
                         return true;
+                    }
                     b.setValue(a.getValue());
                     a.setValue(tmp);
                 }

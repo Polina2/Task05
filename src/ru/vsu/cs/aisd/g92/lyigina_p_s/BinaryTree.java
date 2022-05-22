@@ -49,6 +49,8 @@ public interface BinaryTree<T> extends Iterable<T> {
             return Color.BLACK;
         }
 
+        default void setColor(Color color) {}
+
         /**
          * Реализация Iterable&lt;T&gt;
          *
