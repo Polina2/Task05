@@ -280,7 +280,7 @@ public class TreeDemoFrame extends JFrame {
                 try {
                     SimpleBinaryTree<Integer> newTree = new SimpleBinaryTree<>(Integer::parseInt);
                     newTree.fromBracketNotation(textFieldBracketNotationTree.getText());
-                    boolean result = newTree.solution();
+                    boolean result = newTree.solution1();
                     tree = newTree;
                     if (!result) {
                         textFieldResult.setText("Нельзя получить дерево поиска");

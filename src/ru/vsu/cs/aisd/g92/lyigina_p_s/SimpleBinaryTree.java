@@ -1,6 +1,8 @@
 package ru.vsu.cs.aisd.g92.lyigina_p_s;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -216,6 +218,32 @@ public class SimpleBinaryTree<T extends Comparable<? super T>> implements Binary
                 }
             }
         }
+        return false;
+    }
+
+    public boolean solution1() {
+        List<TreeNode<T>> mistakes = new ArrayList<>();
+        TreeNode<T> prev = null;
+        for (TreeNode<T> node : BinaryTreeAlgorithms.inOrderNodes(root)) {
+            if (prev != null) {
+                if (node.getValue().compareTo(prev.getValue()) < 0) {
+                    mistakes.add(mistakes.size()>0 ? node : prev);
+                }
+            }
+            prev = node;
+        }
+        if (mistakes.size() != 2)
+            return false;
+        T tmp = mistakes.get(0).getValue();
+        mistakes.get(0).setValue(mistakes.get(1).getValue());
+        mistakes.get(1).setValue(tmp);
+        if (isBSTreeRecursion(root, null, null)) {
+            mistakes.get(0).setColor(Color.RED);
+            mistakes.get(1).setColor(Color.RED);
+            return true;
+        }
+        mistakes.get(1).setValue(mistakes.get(0).getValue());
+        mistakes.get(0).setValue(tmp);
         return false;
     }
 }
